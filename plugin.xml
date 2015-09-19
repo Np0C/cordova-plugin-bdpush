@@ -12,7 +12,7 @@
     <repo>https://github.com/Np0C/cordova-plugin-bdpush.git</repo>
 
     <!-- add this to your config.xml -->
-    <preference name="BD_PUSH_APP_KEY" />
+    <preference name="BD_PUSH_API_KEY" />
     <!--require cordova version -->
     <engines>
         <engine name="cordova" version=">=3.5.0" />
