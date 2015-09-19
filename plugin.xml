@@ -30,9 +30,9 @@
         <!--<hook type="before_plugin_uninstall" src="scripts/android-install.js" />-->
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <!--<feature name="Wechat">-->
-                <!--<param name="android-package" value="xu.li.cordova.wechat.Wechat"/>-->
-            <!--</feature>-->
+            <feature name="BDPush">
+                <param name="android-package" value="com.jianzhi_inc.dandelion.bdpush.BDPush"/>
+            </feature>
             <preference name="BD_PUSH_API_KEY" value="$BD_PUSH_API_KEY"/>
         </config-file>
 
