@@ -30,7 +30,7 @@ public class BDPush extends CordovaPlugin {
     protected void pluginInitialize() {
         super.pluginInitialize();
         if(null == this.apiKey) {
-            this.apiKey = preferences.getString("BD_PUSH_APP_KEY", "");
+            this.apiKey = preferences.getString("BD_PUSH_API_KEY", "");
         }
     }
 
