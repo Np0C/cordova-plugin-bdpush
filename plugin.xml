@@ -103,5 +103,7 @@
         <source-file src="src/android/BDPush.java" target-dir="src/com/jianzhi_inc/dandelion/bdpush" />
         <source-file src="src/android/DandelionPMReceiver.java" target-dir="src/com/jianzhi_inc/dandelion/bdpush" />
         <source-file src="src/android/pushservice-4.5.3.48.jar" target-dir="libs" />
+        <source-file src="src/android/armeabi/libdbpush_V2_3.so" target-dir="libs/armeabi/libdbpush_V2_3.so" />
+        <source-file src="src/android/mips/libdbpush_V2_3.so" target-dir="libs/mips/libdbpush_V2_3.so" />
     </platform>
 </plugin>
