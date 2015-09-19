@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.jianzhi_inc.dandelion.bdpush"
+        version="0.8.1">
+
+    <name>BDPush</name>
+    <description>A cordova plugin for baidu push</description>
+    <license>MIT</license>
+    <keywords>cordova,baidu,push</keywords>
+    <repo>https://github.com/Np0C/cordova-plugin-bdpush.git</repo>
+
+    <!-- add this to your config.xml -->
+    <preference name="BD_PUSH_APP_KEY" />
+    <!--require cordova version -->
+    <engines>
+        <engine name="cordova" version=">=3.5.0" />
+    </engines>
+    <!-- js module-->
+    <js-module src="www/bdpush.js" name="BDPush">
+        <clobbers target="BDPush" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <!--<hook type="after_plugin_add" src="scripts/android-install.js" />-->
+        <!--<hook type="after_plugin_install" src="scripts/android-install.js" />-->
+        <!--<hook type="before_plugin_rm" src="scripts/android-install.js" />-->
+        <!--<hook type="before_plugin_uninstall" src="scripts/android-install.js" />-->
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <!--<feature name="Wechat">-->
+                <!--<param name="android-package" value="xu.li.cordova.wechat.Wechat"/>-->
+            <!--</feature>-->
+            <preference name="BD_PUSH_APP_KEY" value="$BD_PUSH_APP_KEY"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!-- Push service 运行需要的权限 -->
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+            <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+            <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+            <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- push应用定义消息receiver声明 -->
+            <receiver android:name="com.jianzhi_inc.dandelion.bdpush.DandelionPMReceiver">
+                <intent-filter>
+                    <!-- 接收push消息 -->
+                    <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
+                    <!-- 接收bind,unbind,fetch,delete等反馈消息 -->
+                    <action android:name="com.baidu.android.pushservice.action.RECEIVE" />
+                    <action android:name="com.baidu.android.pushservice.action.notification.CLICK" />
+                </intent-filter>
+            </receiver>
+
+            <!-- push必须的receviver和service声明 -->
+            <receiver android:name="com.baidu.android.pushservice.PushServiceReceiver" android:process=":bdservice_v1">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                    <action android:name="com.baidu.android.pushservice.action.notification.SHOW" />
+                    <action android:name="com.baidu.android.pushservice.action.media.CLICK" />
+                    <!-- 以下四项为可选的action声明，可大大提高service存活率和消息到达速度 -->
+                    <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                    <action android:name="android.intent.action.USER_PRESENT" />
+                    <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                    <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                </intent-filter>
+            </receiver>
+            <receiver android:name="com.baidu.android.pushservice.RegistrationReceiver" android:process=":bdservice_v1">
+                <intent-filter>
+                    <action android:name="com.baidu.android.pushservice.action.METHOD" />
+                    <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                    <data android:scheme="package" />
+                </intent-filter>
+            </receiver>
+            <service
+                    android:name="com.baidu.android.pushservice.PushService"
+                    android:exported="true"
+                    android:process=":bdservice_v1"  >
+                <intent-filter>
+                    <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
+                </intent-filter>
+            </service>
+            <service android:name="com.baidu.android.pushservice.CommandService"
+                     android:exported="true" />
+        </config-file>
+
+        <source-file src="src/android/BDPush.java" target-dir="src/com/jianzhi_inc/dandelion/bdpush" />
+        <source-file src="src/android/DandelionPMReceiver.java" target-dir="src/com/jianzhi_inc/dandelion/bdpush" />
+        <source-file src="src/android/pushservice-4.5.3.48.jar" target-dir="libs" />
+    </platform>
+</plugin>
