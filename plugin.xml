@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="com.jianzhi_inc.dandelion.bdpush"
-        version="0.8.1">
+        version="0.0.1">
 
     <name>BDPush</name>
     <description>A cordova plugin for baidu push</description>
