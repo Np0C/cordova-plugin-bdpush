@@ -15,6 +15,7 @@ import org.json.JSONException;
 public class BDPush extends CordovaPlugin {
 
     public final static String ACTION_BIND = "bind";
+    public final static String ACTION_UNBIND = "unbind";
 
 
     //public final static String CALLBACK_BIND_SUCCESS = "bind_success";
@@ -42,13 +43,21 @@ public class BDPush extends CordovaPlugin {
         if(ACTION_BIND.equals(action)) {
             return bindBDPush(args, callbackContext);
         }
-
+        if(ACTION_UNBIND.equals(action)) {
+            return unbindBDPush(args, callbackContext);
+        }
         return super.execute(action, args, callbackContext);
     }
 
 
     private boolean bindBDPush(JSONArray args, CallbackContext callbackContext) {
         PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, this.apiKey);
+        currentCallbackContext = callbackContext;
+        return true;
+    }
+
+    private boolean unbindBDPush(JSONArray args, CallbackContext callbackContext) {
+        PushManager.stopWork(webView.getContext());
         currentCallbackContext = callbackContext;
         return true;
     }
