@@ -73,6 +73,7 @@ public class BDPush extends CordovaPlugin {
         //    }
         //});
         PushManager.unbind(webView.getContext());
+        currentCallbackContext = callbackContext;
         return true;
     }
 }
