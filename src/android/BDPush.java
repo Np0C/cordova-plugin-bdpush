@@ -66,12 +66,13 @@ public class BDPush extends CordovaPlugin {
         //cordova.getThreadPool().execute(new Runnable() {
         //    @Override
         //    public void run() {
-                if(PushManager.isConnected(webView.getContext())) {
-                    PushManager.stopWork(webView.getContext());
-                    currentCallbackContext = callbackContext;
-                }
+//                if(PushManager.isConnected(webView.getContext())) {
+//                    PushManager.stopWork(webView.getContext());
+//                    currentCallbackContext = callbackContext;
+//                }
         //    }
         //});
+        PushManager.unbind(webView.getContext());
         return true;
     }
 }
