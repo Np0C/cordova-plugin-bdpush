@@ -21,7 +21,7 @@ public class BDPush extends CordovaPlugin {
 
     //public final static String CALLBACK_BIND_SUCCESS = "bind_success";
 
-    protected String apiKey;
+    private static String apiKey;
     public static CallbackContext currentCallbackContext;
 
     /** TAG to Log */
@@ -31,8 +31,8 @@ public class BDPush extends CordovaPlugin {
     @Override
     protected void pluginInitialize() {
         super.pluginInitialize();
-        if(null == this.apiKey) {
-            this.apiKey = preferences.getString("BD_PUSH_API_KEY", "");
+        if(null == apiKey) {
+            apiKey = preferences.getString("BD_PUSH_API_KEY", "");
         }
     }
 
@@ -55,7 +55,7 @@ public class BDPush extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
             @Override
             public void run() {
-                PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, this.apiKey);
+                PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, apiKey);
                 currentCallbackContext = callbackContext;
             }
         });
