@@ -21,7 +21,7 @@ public class BDPush extends CordovaPlugin {
 
     //public final static String CALLBACK_BIND_SUCCESS = "bind_success";
 
-    private static String apiKey;
+    private String apiKey;
     public static CallbackContext currentCallbackContext;
 
     /** TAG to Log */
@@ -31,8 +31,8 @@ public class BDPush extends CordovaPlugin {
     @Override
     protected void pluginInitialize() {
         super.pluginInitialize();
-        if(null == apiKey) {
-            apiKey = preferences.getString("BD_PUSH_API_KEY", "");
+        if(null == this.apiKey) {
+            this.apiKey = preferences.getString("BD_PUSH_API_KEY", "");
         }
     }
 
@@ -52,26 +52,26 @@ public class BDPush extends CordovaPlugin {
 
 
     private boolean bindBDPush(JSONArray args, CallbackContext callbackContext) {
-        cordova.getThreadPool().execute(new Runnable() {
-            @Override
-            public void run() {
-                PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, apiKey);
+        //cordova.getThreadPool().execute(new Runnable() {
+        //    @Override
+        //    public void run() {
+                PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, this.apiKey);
                 currentCallbackContext = callbackContext;
-            }
-        });
+        //    }
+        //});
         return true;
     }
 
     private boolean unbindBDPush(JSONArray args, CallbackContext callbackContext) {
-        cordova.getThreadPool().execute(new Runnable() {
-            @Override
-            public void run() {
+        //cordova.getThreadPool().execute(new Runnable() {
+        //    @Override
+        //    public void run() {
                 if(PushManager.isConnected(webView.getContext())) {
                     PushManager.stopWork(webView.getContext());
                     currentCallbackContext = callbackContext;
                 }
-            }
-        });
+        //    }
+        //});
         return true;
     }
 }
