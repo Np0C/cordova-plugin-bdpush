@@ -125,12 +125,12 @@ public class DandelionPMReceiver extends PushMessageReceiver {
         String responseString = "onUnbind errorCode=" + errorCode
                 + " requestId = " + requestId;
         Log.d(TAG, responseString);
-
-        if (errorCode == 0) {
-            // 解绑定成功
-        }
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        //updateContent(context, responseString);
+        JSONObject response = new JSONObject();
+        //response.put("errorCode", 0);
+        try {
+            response.put("errorCode", errorCode);
+        } catch (JSONException e) {}
+        BDPush.currentCallbackContext.success(response);
     }
 
     /**
