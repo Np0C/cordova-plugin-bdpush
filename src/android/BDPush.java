@@ -4,6 +4,7 @@ import android.util.Log;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,14 +52,26 @@ public class BDPush extends CordovaPlugin {
 
 
     private boolean bindBDPush(JSONArray args, CallbackContext callbackContext) {
-        PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, this.apiKey);
-        currentCallbackContext = callbackContext;
+        cordova.getThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                PushManager.startWork(webView.getContext(), PushConstants.LOGIN_TYPE_API_KEY, this.apiKey);
+                currentCallbackContext = callbackContext;
+            }
+        });
         return true;
     }
 
     private boolean unbindBDPush(JSONArray args, CallbackContext callbackContext) {
-        PushManager.stopWork(webView.getContext());
-        currentCallbackContext = callbackContext;
+        cordova.getThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(PushManager.isConnected(webView.getContext())) {
+                    PushManager.stopWork(webView.getContext());
+                    currentCallbackContext = callbackContext;
+                }
+            }
+        });
         return true;
     }
 }
